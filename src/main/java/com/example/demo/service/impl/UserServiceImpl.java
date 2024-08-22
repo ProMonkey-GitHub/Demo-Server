@@ -34,11 +34,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Long findIdByUserName(String userName) {
-        return userRepository.findIdByUserName(userName);
-    }
-
-    @Override
     public List<User> findAll() {
         return userRepository.findAll();
     }
@@ -50,22 +45,36 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Page<User> findByPageWithKeyWord(int page, int pageSize, String keyword) {
+    public Page<User> findByPageWithKeyword(int page, int pageSize, String keyword) {
         Pageable pageable = PageRequest.of(page, pageSize);
         //自定义查询条件
         Specification<User> spec = (root, query, criteriaBuilder) -> {
-            //根据属性名获取查询对象的属性
+
             Path<Object> id = root.get("id");
             Path<Object> userName = root.get("userName");
-//            Path<Object> email = root.get("email");
 
             Predicate likeId = criteriaBuilder.like(id.as(String.class), "%" + keyword + "%");
             Predicate likeUserName = criteriaBuilder.like(userName.as(String.class), "%" + keyword + "%");
-//            Predicate likeEmail = criteriaBuilder.like(email.as(String.class), "%" + keyword + "%");
-//            return criteriaBuilder.or(likeId, likeUserName, likeEmail);
+
             return criteriaBuilder.or(likeId, likeUserName);
         };
         return userRepository.findAll(spec, pageable);
+    }
+
+    @Override
+    public List<User> findByKeyword(String keyword) {
+        //自定义查询条件
+        Specification<User> spec = (root, query, criteriaBuilder) -> {
+
+            Path<Object> id = root.get("id");
+            Path<Object> userName = root.get("userName");
+
+            Predicate likeId = criteriaBuilder.like(id.as(String.class), "%" + keyword + "%");
+            Predicate likeUserName = criteriaBuilder.like(userName.as(String.class), "%" + keyword + "%");
+
+            return criteriaBuilder.or(likeId, likeUserName);
+        };
+        return userRepository.findAll(spec);
     }
 
     @Override

@@ -7,8 +7,6 @@ import com.example.demo.service.UserService;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Timestamp;
-import java.util.Arrays;
 import java.util.List;
 
 
@@ -21,17 +19,6 @@ public class UserController {
     public UserController(UserService userService) {
         this.userService = userService;
     }
-
-//    @PostMapping("/insert")
-//    public String insert(@RequestBody User user) {
-//        userRepository.save(user);
-//        return "接口调用成功！";
-//    }
-//
-//    @GetMapping("/select")
-//    public List<User> findAll() {
-//        return userRepository.findAll();
-//    }
 
     @PostMapping("/add")
     public void add(@RequestBody User user) {
@@ -66,10 +53,16 @@ public class UserController {
         return new Result(userInfoListDto);
     }
 
-    @GetMapping("/select")
-    public List<User> getUserByKeyword(@RequestParam("keyword")String keyword, @RequestParam("page")int page, @RequestParam("page_size")int page_size) {
+    @GetMapping("/search")
+    public Result getUserByKeyword(@RequestParam("keyword")String keyword, @RequestParam("page")int page, @RequestParam("page_size")int page_size) {
 
-        return userService.findByPageWithKeyWord(page - 1, page_size, keyword).getContent();
+        List<User> userList = userService.findByPageWithKeyword(page - 1, page_size, keyword).getContent();
+
+        int total = userService.findByKeyword(keyword).size();
+
+        UserInfoListDto userInfoListDto = new UserInfoListDto(userList, total);
+
+        return new Result(userInfoListDto);
 
     }
 }

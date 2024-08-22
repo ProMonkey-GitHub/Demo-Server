@@ -10,13 +10,13 @@ public interface UserService {
 
     User findById(long id);
 
-    Long findIdByUserName(String userName);
-
     List<User> findAll();
 
     Page<User> findByPage(int page, int pageSize);
 
-    Page<User> findByPageWithKeyWord(int page, int pageSize, String keyword);
+    Page<User> findByPageWithKeyword(int page, int pageSize, String keyword);
+
+    List<User> findByKeyword(String keyword);
 
     void deleteById(Long id);
 }
