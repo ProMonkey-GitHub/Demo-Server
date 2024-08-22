@@ -9,6 +9,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.Objects;
 
@@ -38,17 +39,14 @@ public class User {
     @Column(name = "username", nullable = false, unique = true, columnDefinition = "varchar(30)")
     private String userName;
 
-    @Column(name = "avatar")
-    private String avatar;
-
-    @Column(name = "gender", columnDefinition = "tinyint default 0")
-    private int gender;
+    @Column(name = "gender", columnDefinition = "varchar(4)")
+    private char gender;
 
     @Column(name = "birthday", columnDefinition = "datetime(3) default '1970-01-01'")
-    private Timestamp birthday;
+    private Date birthday;
 
-    @Column(name = "role", columnDefinition = "tinyint default 0")
-    private int role;
+    @Column(name = "role", columnDefinition = "varchar(10) default '普通用户'")
+    private String role;
 
     @Override
     public boolean equals(Object o) {
