@@ -1,6 +1,5 @@
 package com.example.demo.dto.user;
 
-import com.example.demo.dto.user.UserInfo;
 import com.example.demo.entity.User;
 import lombok.Data;
 

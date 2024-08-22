@@ -29,8 +29,14 @@ public class UserController {
 
     @PostMapping("/edit")
     public void modify(@RequestBody User user) {
+        User editUser = userService.findById(user.getId());
 
-        userService.saveUser(user);
+        editUser.setUserName(user.getUserName());
+        editUser.setGender(user.getGender());
+        editUser.setBirthday(user.getBirthday());
+        editUser.setRole(user.getRole());
+
+        userService.saveUser(editUser);
 
     }
 
@@ -42,7 +48,7 @@ public class UserController {
     }
 
     @GetMapping("/fetch")
-    public Result getAllUser(@RequestParam("page")int page, @RequestParam("page_size")int page_size) {
+    public Result getAllUser(@RequestParam("page") int page, @RequestParam("page_size") int page_size) {
 
         List<User> userList = userService.findByPage(page - 1, page_size).getContent();
 
@@ -54,7 +60,7 @@ public class UserController {
     }
 
     @GetMapping("/search")
-    public Result getUserByKeyword(@RequestParam("keyword")String keyword, @RequestParam("page")int page, @RequestParam("page_size")int page_size) {
+    public Result getUserByKeyword(@RequestParam("keyword") String keyword, @RequestParam("page") int page, @RequestParam("page_size") int page_size) {
 
         List<User> userList = userService.findByPageWithKeyword(page - 1, page_size, keyword).getContent();
 
